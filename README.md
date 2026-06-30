@@ -1,11 +1,11 @@
 # quick-response
 
-a go qr code generator deployed on vercel with dockerfile.vercel.
+a go qr code generator deployed on vercel with [dockerfile.vercel](https://vercel.com/blog/dockerfile-on-vercel#:~:text=Add%20a%20Dockerfile.vercel%20file%20that%20builds%20it%20into%20a%20small%20image%20and%20runs%20it%3A).
 
 testing the dockerfile on vercel feature:
 https://vercel.com/blog/dockerfile-on-vercel
 
-vercel auto-detected the dockerfile preset during project setup:
+vercel auto-detects the dockerfile preset during project setup:
 
 ![app-preset](screenshots/app-preset.png)
 
@@ -14,14 +14,6 @@ vercel auto-detected the dockerfile preset during project setup:
 - `GET /` - web form to generate qr codes
 - `GET /qr?text=hello&size=256` - returns a png
 - `GET /health` - health check
-
-## deploy
-
-```bash
-vercel deploy
-```
-
-or push to github and vercel picks it up.
 
 ## what this tests
 
