@@ -15,6 +15,9 @@ import (
 //go:embed og.svg
 var ogImageData []byte
 
+//go:embed favicon.ico
+var faviconData []byte
+
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -25,6 +28,7 @@ func main() {
 	http.HandleFunc("/qr", qr)
 	http.HandleFunc("/health", health)
 	http.HandleFunc("/og.svg", ogImage)
+	http.HandleFunc("/favicon.ico", favicon)
 
 	log.Println("up on :" + port)
 	http.ListenAndServe(":"+port, nil)
@@ -40,6 +44,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 <html>
 <head>
 <title>quick response</title>
+<link rel="icon" href="/favicon.ico">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta property="og:title" content="quick-response">
 <meta property="og:description" content="qr code generator">
@@ -247,4 +252,14 @@ func ogImage(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "image/svg+xml")
 	w.Header().Set("Cache-Control", "public, max-age=86400")
 	w.Write(ogImageData)
+}
+
+func favicon(w http.ResponseWriter, r *http.Request) {
+	if len(faviconData) == 0 {
+		http.NotFound(w, r)
+		return
+	}
+	w.Header().Set("Content-Type", "image/x-icon")
+	w.Header().Set("Cache-Control", "public, max-age=86400")
+	w.Write(faviconData)
 }
