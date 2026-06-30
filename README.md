@@ -5,6 +5,10 @@ a go qr code generator deployed on vercel with dockerfile.vercel.
 testing the dockerfile on vercel feature:
 https://vercel.com/blog/dockerfile-on-vercel
 
+vercel auto-detected the dockerfile preset during project setup:
+
+![app-preset](screenshots/app-preset.png)
+
 ## endpoints
 
 - `GET /` - web form to generate qr codes
