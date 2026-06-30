@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "embed"
 	"encoding/json"
 	"image/color"
 	"log"
@@ -11,6 +12,9 @@ import (
 	qrcode "github.com/skip2/go-qrcode"
 )
 
+//go:embed og.svg
+var ogImageData []byte
+
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -20,6 +24,7 @@ func main() {
 	http.HandleFunc("/", home)
 	http.HandleFunc("/qr", qr)
 	http.HandleFunc("/health", health)
+	http.HandleFunc("/og.svg", ogImage)
 
 	log.Println("up on :" + port)
 	http.ListenAndServe(":"+port, nil)
@@ -36,6 +41,12 @@ func home(w http.ResponseWriter, r *http.Request) {
 <head>
 <title>quick response</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="quick-response">
+<meta property="og:description" content="qr code generator">
+<meta property="og:image" content="/og.svg">
+<meta property="og:image:width" content="800">
+<meta property="og:image:height" content="400">
+<meta name="twitter:card" content="summary_large_image">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif; display: flex; min-height: 100vh; background: #000; color: #fff; }
@@ -226,4 +237,14 @@ func qr(w http.ResponseWriter, r *http.Request) {
 func health(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{"status": "ok"})
+}
+
+func ogImage(w http.ResponseWriter, r *http.Request) {
+	if len(ogImageData) == 0 {
+		http.NotFound(w, r)
+		return
+	}
+	w.Header().Set("Content-Type", "image/svg+xml")
+	w.Header().Set("Cache-Control", "public, max-age=86400")
+	w.Write(ogImageData)
 }
