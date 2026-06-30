@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"image/color"
 	"log"
 	"net/http"
 	"os"
@@ -60,8 +61,8 @@ button:active { background: #ccc; }
 #result { margin-top: 1.5rem; text-align: center; min-height: 4rem; }
 #result img { max-width: 100%; border-radius: 4px; }
 .footer { margin-top: 3rem; text-align: center; font-size: 0.75rem; color: #666; }
-.footer a { color: #888; text-decoration: underline; text-decoration-color: #333; text-underline-offset: 3px; }
-.footer a:hover { color: #bbb; text-decoration-color: #666; }
+.footer a { color: #60a5fa; text-decoration: underline; text-decoration-color: #1e40af; text-underline-offset: 3px; }
+.footer a:hover { color: #93c5fd; text-decoration-color: #3b82f6; }
 </style>
 </head>
 <body>
@@ -101,7 +102,7 @@ button:active { background: #ccc; }
 </select>
 <button onclick="gen()">generate</button>
 <div id="result"></div>
-<div class="footer">running on vercel with <a href="https://vercel.com/blog/dockerfile-on-vercel#:~:text=Add%20a%20Dockerfile.vercel%20file%20that%20builds%20it%20into%20a%20small%20image%20and%20runs%20it%3A">dockerfile.vercel</a></div>
+<div class="footer">100% Go, running on vercel with <a href="https://vercel.com/blog/dockerfile-on-vercel">dockerfile.vercel ↗</a></div>
 </div>
 </div>
 <script>
@@ -202,7 +203,16 @@ func qr(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	png, err := qrcode.Encode(txt, qrcode.Medium, sz)
+	qr, err := qrcode.New(txt, qrcode.Medium)
+	if err != nil {
+		http.Error(w, "failed", http.StatusInternalServerError)
+		return
+	}
+
+	qr.ForegroundColor = color.White
+	qr.BackgroundColor = color.Transparent
+
+	png, err := qr.PNG(sz)
 	if err != nil {
 		http.Error(w, "failed", http.StatusInternalServerError)
 		return
