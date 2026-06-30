@@ -1,9 +1,9 @@
-# quick-response
+> [!EXPERIMENTAL]
+> testing the dockerfile on vercel feature: https://vercel.com/blog/dockerfile-on-vercel
 
-a go qr code generator deployed on vercel with [dockerfile.vercel](https://vercel.com/blog/dockerfile-on-vercel#:~:text=Add%20a%20Dockerfile.vercel%20file%20that%20builds%20it%20into%20a%20small%20image%20and%20runs%20it%3A).
+## quick-response
 
-testing the dockerfile on vercel feature:
-https://vercel.com/blog/dockerfile-on-vercel
+a go qr code generator deployed on vercel with dockerfile.vercel.
 
 vercel auto-detects the dockerfile preset during project setup:
 
